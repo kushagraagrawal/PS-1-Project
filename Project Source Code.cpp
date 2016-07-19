@@ -3,9 +3,7 @@
 #define maxn 100
 using namespace std;
 //--------------------program parameters---------------------
-int TESTSIZE = 10;
-int TRAINSIZE = 1095 ;
-int ITER = 1000; 		//40
+int TESTSIZE,TRAINSIZE,ITER; 		//40
 const char* train_file="training-set.txt";
 const char* test_file ="test-set2.txt";
 const char* output_file="output2.txt";
@@ -265,8 +263,18 @@ void GenInput(double* raw, double* Input){
 }
 //-----------------------main function---------------------------
 int main(){
-	LL layer[3]={6,5,1};
-		MLP test(3,layer);
+	/*LL layer[3]={6,5,1};*/
+	int number_of_layers;
+		
+	fstream fin("input-file.txt",ios::in);
+	fin>>TESTSIZE;
+	fin>>TRAINSIZE;
+	fin>>ITER;
+	fin>>number_of_layers;
+	LL layer[number_of_layers];
+	for(int i=0;i<number_of_layers;i++)
+		fin>>layer[i];
+	MLP test(number_of_layers,layer);
 	double raw_data[6*TRAINSIZE];
 		//--------------------Train for ITER times--------------------
 	double Input[6*TRAINSIZE];
@@ -289,7 +297,7 @@ int main(){
 		myfile<<TestOutput[i]<<endl;
 	}
 	myfile<<"]\n";
-
+	fin.close();
   myfile.close();
 	return 0;
 }
